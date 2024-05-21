@@ -73,7 +73,7 @@ router.get('/', jwtAuthMiddleware, async (req, res) => {
 
 });
 
-router.post('/payment', async (req, res) => {
+router.post('/payment/upi', async (req, res) => {
     try {
         
         const userData = req.body;
@@ -132,6 +132,54 @@ router.post('/payment', async (req, res) => {
 
 
         res.status(200).json({ message: `Successfully Sended $${amount} from ${senderAccountNumber} to ${receiverAccountNumber}` });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+router.post('/payment/cash', async (req, res) => {
+    try {
+        
+        const userData = req.body;
+        const userAccountNumber = userData.userAccountNumber;
+        const userPin = userData.userPin;
+        const amount = userData.amount;
+
+        if (!senderPin || isNaN(senderAccountNumber) || isNaN(amount) || amount <= 0 ) {
+            return res.status(400).json({ message: 'Invalid input data' });
+        }
+
+        const userAccount = await Account.findOne({ accountNumber: userAccountNumber });
+
+        if (!userAccount) {
+            return res.status(401).json({ message: 'Invalid account number' });
+        }
+
+        // console.log(`Comparing PIN: provided(${senderPin}), stored(${senderAccount.pin})`);
+
+        if (!await userAccount.comparePin(userPin)) {
+            return res.status(401).json({ message: "Invalid Account's PIN" });
+        }
+
+        const userBalance = userAccount.balance;
+
+        if(userBalance < amount){
+            return res.status(401).json({ message: "Insufficient Balance" });
+        }
+
+        userAccount.balance -= amount;
+
+        userAccount.transactions.push({
+            modeOfPayment: 'cash',
+            type: 'debit',
+            amount: amount,
+            timestamp: new Date()
+        });
+
+        await userAccount.save();
+
+        res.status(200).json({ message: `Successfully withdrawal of $${amount} from ${senderAccountNumber} ` });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Internal Server Error' });
