@@ -146,7 +146,7 @@ router.post('/payment/cash', async (req, res) => {
         const userPin = userData.userPin;
         const amount = userData.amount;
 
-        if (!senderPin || isNaN(senderAccountNumber) || isNaN(amount) || amount <= 0 ) {
+        if (!userPin || isNaN(userAccountNumber) || isNaN(amount) || amount <= 0 ) {
             return res.status(400).json({ message: 'Invalid input data' });
         }
 
@@ -179,7 +179,7 @@ router.post('/payment/cash', async (req, res) => {
 
         await userAccount.save();
 
-        res.status(200).json({ message: `Successfully withdrawal of $${amount} from ${senderAccountNumber} ` });
+        res.status(200).json({ message: `Successfully withdrawal of $${amount} from ${userAccountNumber} ` });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Internal Server Error' });
