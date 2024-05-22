@@ -1,4 +1,4 @@
-# Rentify Application
+# Bankify Application
 
 This is a backend application for a Banking system where users can make transaction through UPI and Cash both Can Deposit money in bank . It provides functionalities for user authentication, User Management, and Transaction History.
 
