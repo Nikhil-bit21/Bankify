@@ -1,7 +1,8 @@
-const express = require('express')
+const express = require('express');
 const app = express();
 const db = require('./db');
 require('dotenv').config();
+const axios = require('axios');
 
 const bodyParser = require('body-parser'); 
 app.use(bodyParser.json()); 
@@ -38,7 +39,7 @@ app.get('/', async (req, res) => {
     } catch (err) {
         // if (err.response && err.response.status === 404) {
             // Notion page not found, send the JSON message
-            res.status(200).json({ message: `Find all the endpoint details at https://github.com/Nikhil-bit21/Bankify` });
+            res.status(200).json({ error_message: `Find all the endpoint details at https://github.com/Nikhil-bit21/Bankify` });
         // } else {
             // Some other error occurred
             console.error(err);
