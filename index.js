@@ -23,7 +23,7 @@ const userRoute = require('./routes/userRoute');
 
 app.get('/', async (req, res) => {
     try {
-        const url = 'https://nikhilbit21.notion.site/Bankify-Application-1e214b54a8df4ecfae093b3e0da9058e';
+        const url = 'https://nikhilbit21.notion.site/Bankify-Application-1e214b54a8df4ecfae093b3e0da9058e?pvs=74';
         
         // Make a HEAD request to check if the page is available
         const response = await axios.head(url);
@@ -33,12 +33,12 @@ app.get('/', async (req, res) => {
             res.redirect(url);
         } else {
             // Page is not available, send the JSON message
-            res.status(200).json({ message: `Find all the endpoint details at https://github.com/Nikhil-bit21/Rentify-api` });
+            res.status(200).json({ message: `Find all the endpoint details at https://github.com/Nikhil-bit21/Bankify` });
         }
     } catch (err) {
         // if (err.response && err.response.status === 404) {
             // Notion page not found, send the JSON message
-            res.status(200).json({ message: `Find all the endpoint details at https://github.com/Nikhil-bit21/Rentify-api` });
+            res.status(200).json({ message: `Find all the endpoint details at https://github.com/Nikhil-bit21/Bankify` });
         // } else {
             // Some other error occurred
             console.error(err);
